@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 pip install ccxt
 
 import ccxt
@@ -6,7 +9,7 @@ import numpy as np
 import time
 from datetime import datetime
 
-# Configuraci髇 de la API de KuCoin
+# Configuraci贸n de la API de KuCoin
 exchange = ccxt.kucoinfutures({
     "apiKey": "9fhaHw3A5pAl8zXmovO6JB0r5xmrlf3BxdCqZHLPIL2fLv7Emi28a1CY",
     "secret": "IHHE6YuUkKI0woVZyJfJQE9tHEZUjtUeAsnYEsmIkOQAxRmD7jrMAkPz2njmLq1Z",
@@ -14,12 +17,12 @@ exchange = ccxt.kucoinfutures({
     "options": {"defaultType": "future"}
 })
 
-# Par醡etros de estrategia
-PAIRS = ["BTC/USDT:USDT", "ETH/USDT:USDT", "LTC/USDT:USDT", "DOGE/USDT:USDT"]  # Puedes agregar m醩
+# Par谩metros de estrategia
+PAIRS = ["BTC/USDT:USDT", "ETH/USDT:USDT", "LTC/USDT:USDT", "DOGE/USDT:USDT"]  # Puedes agregar m谩s
 ATR_MULTIPLIER = 2.5  # Multiplicador para volatilidad extrema
 LIQUIDATION_THRESHOLD = 1.5  # Multiplicador de volumen de liquidaciones
 
-# Funci髇 para obtener datos de mercado
+# Funci贸n para obtener datos de mercado
 def get_ohlcv(symbol, timeframe="1m", limit=50):
     try:
         bars = exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
@@ -30,13 +33,13 @@ def get_ohlcv(symbol, timeframe="1m", limit=50):
         print(f"Error obteniendo datos para {symbol}: {e}")
         return None
 
-# Funci髇 para calcular ATR
+# Funci贸n para calcular ATR
 def calculate_atr(df, period=14):
     df["TR"] = np.maximum(df["high"] - df["low"], np.maximum(abs(df["high"] - df["close"].shift(1)), abs(df["low"] - df["close"].shift(1))))
     df["ATR"] = df["TR"].rolling(window=period).mean()
     return df
 
-# Funci髇 para generar se馻les
+# Funci贸n para generar se帽ales
 def generate_signals():
     signals = []
     for pair in PAIRS:
