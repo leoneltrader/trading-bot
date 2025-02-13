@@ -1,26 +1,24 @@
 # -*- coding: utf-8 -*-
 
-
-pip install ccxt
-
 import ccxt
 import pandas as pd
 import numpy as np
 import time
+import os  # Para manejar variables de entorno
 from datetime import datetime
 
-# Configuración de la API de KuCoin
+# Configuración de la API de KuCoin desde variables de entorno
 exchange = ccxt.kucoinfutures({
-    "apiKey": "9fhaHw3A5pAl8zXmovO6JB0r5xmrlf3BxdCqZHLPIL2fLv7Emi28a1CY",
-    "secret": "IHHE6YuUkKI0woVZyJfJQE9tHEZUjtUeAsnYEsmIkOQAxRmD7jrMAkPz2njmLq1Z",
-    "password": "Braian1234",
+    "apiKey": os.getenv("KUCOIN_API_KEY"),
+    "secret": os.getenv("KUCOIN_API_SECRET"),
+    "password": os.getenv("KUCOIN_API_PASSWORD"),
     "options": {"defaultType": "future"}
 })
 
 # Parámetros de estrategia
-PAIRS = ["BTC/USDT:USDT", "ETH/USDT:USDT", "LTC/USDT:USDT", "DOGE/USDT:USDT"]  # Puedes agregar más
-ATR_MULTIPLIER = 2.5  # Multiplicador para volatilidad extrema
-LIQUIDATION_THRESHOLD = 1.5  # Multiplicador de volumen de liquidaciones
+PAIRS = ["BTC/USDT:USDT", "ETH/USDT:USDT", "LTC/USDT:USDT", "DOGE/USDT:USDT"]
+ATR_MULTIPLIER = 2.5  
+LIQUIDATION_THRESHOLD = 1.5  
 
 # Función para obtener datos de mercado
 def get_ohlcv(symbol, timeframe="1m", limit=50):
@@ -71,3 +69,4 @@ while True:
     for signal in signals:
         print(f"{signal['timestamp']} - {signal['pair']} - {signal['signal']} - Entry: {signal['entry']}, SL: {signal['stop_loss']}, TP: {signal['take_profit']}")
     time.sleep(60)
+
